@@ -56,7 +56,17 @@ public class HomeController {
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             return "add";
-//        }else{
+
+        }else{
+        Optional<Employer> employer = employerRepository.findById(employerId);
+        newJob.setEmployer(employer.get());
+
+
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
+
+//            skillRepository.findAllById((Iterable<Integer>) any);
+//            job.setSkills((List<Skill>) any);
 //            Optional<Employer> result = employerRepository.findById(employerId);
 //            if (result.isEmpty()) {
 //                model.addAttribute("title", "Invalid Employer ID: " + employerId);
@@ -64,15 +74,11 @@ public class HomeController {
 //                Employer employer = result.get();
 //                model.addAttribute("title", "Employer: " + employer.getName());
 //                model.addAttribute("employerId", employer.getId());
-//
-            }else {
-            Optional<Employer> employer = employerRepository.findById(employerId);
-            newJob.setEmployer(employer.get());
-        }
+////
+            }
 
-            List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
-            newJob.setSkills(skillObjs);
-//        }
+
+            jobRepository.save(newJob);
 
         return "redirect:";
     }
